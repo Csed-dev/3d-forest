@@ -116,10 +116,14 @@ void ProjectFilePlugin::slotOpenProject()
 
     QString fileName;
 
-    fileName = QFileDialog::getOpenFileName(mainWindow_,
-                                            tr("Open Project"),
-                                            "",
-                                            tr(PROJECT_FILE_PLUGIN_FILTER_PRJ));
+    QFileDialog dialog(mainWindow_, tr("Open Project"));
+    dialog.setNameFilter(tr(PROJECT_FILE_PLUGIN_FILTER_PRJ));
+    dialog.setFileMode(QFileDialog::ExistingFile);
+    dialog.setOption(QFileDialog::DontUseNativeDialog, true);
+    if (dialog.exec() == QDialog::Accepted && !dialog.selectedFiles().isEmpty())
+    {
+        fileName = dialog.selectedFiles().first();
+    }
 
     if (fileName.isEmpty())
     {

@@ -249,12 +249,25 @@ void fromJson(Segments &out, const Json &in)
 {
     out.clear();
 
+    // Handle both old format (object with "segments" array) and new format (direct array)
+    const Json *segmentsArray = &in;
+    if (in.typeObject() && in.contains("segments"))
+    {
+        segmentsArray = &in["segments"];
+    }
+
+    if (!segmentsArray->typeArray())
+    {
+        out.setDefault();
+        return;
+    }
+
     size_t i = 0;
-    size_t n = in.array().size();
+    size_t n = segmentsArray->array().size();
 
     out.segments_.resize(n);
 
-    for (auto const &it : in.array())
+    for (auto const &it : segmentsArray->array())
     {
         fromJson(out.segments_[i], it);
         size_t id = out.segments_[i].id;

@@ -392,6 +392,17 @@ void MainWindow::loadPlugins()
 
     QString pluginsDirPath =
         QCoreApplication::applicationDirPath() + "/plugins/";
+
+#ifdef Q_OS_MACOS
+    // On macOS, the app is in bin/3DForest.app/Contents/MacOS/
+    // but plugins are in bin/plugins/
+    QDir appDir(QCoreApplication::applicationDirPath());
+    if (appDir.cdUp() && appDir.cdUp() && appDir.cdUp())
+    {
+        pluginsDirPath = appDir.absolutePath() + "/plugins/";
+    }
+#endif
+
     LOG_DEBUG(<< "Load plugins from directory <" << pluginsDirPath.toStdString()
               << ">.");
 
@@ -410,7 +421,8 @@ void MainWindow::loadPlugins()
         // Try to load the file as a plugin.
         QString pluginPath = pluginsDir.absoluteFilePath(fileName);
 
-        if (!(fileName.endsWith(".dll") || fileName.endsWith(".so")))
+        if (!(fileName.endsWith(".dll") || fileName.endsWith(".so") ||
+              fileName.endsWith(".dylib")))
         {
             LOG_DEBUG(<< "Skip file <" << i << "/" << n << "> path <"
                       << pluginPath.toStdString() << ">.");

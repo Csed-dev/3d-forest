@@ -83,7 +83,8 @@ void ViewerViewports::initializeViewports()
 {
     LOG_DEBUG(<< "Initialize viewports.");
     manager_ = std::make_shared<ViewerOpenGLManager>();
-    manager_->init();
+    // Note: manager_->init() is called later when OpenGL context is available
+    // (in ViewerOpenGLViewport::initializeGL)
     setLayout(ViewLayout::VIEW_LAYOUT_SINGLE);
 }
 

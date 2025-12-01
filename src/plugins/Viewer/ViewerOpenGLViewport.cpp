@@ -86,6 +86,12 @@ void ViewerOpenGLViewport::initializeGL()
 
     initializeOpenGLFunctions();
 
+    // Initialize the OpenGL manager now that we have a valid context
+    if (manager_ && !manager_->isInitialized())
+    {
+        manager_->init();
+    }
+
     setUpdateBehavior(QOpenGLWidget::PartialUpdate);
 
     glEnable(GL_DEPTH_TEST);

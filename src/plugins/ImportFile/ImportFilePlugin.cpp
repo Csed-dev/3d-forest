@@ -129,6 +129,7 @@ static void importPluginDialog(MainWindow *mainWindow)
     QFileDialog fileDialog(mainWindow, QObject::tr("Import File"));
     fileDialog.setNameFilter(QObject::tr(IMPORT_PLUGIN_FILTER));
     fileDialog.setFileMode(QFileDialog::ExistingFiles);
+    fileDialog.setOption(QFileDialog::DontUseNativeDialog, true);
 
     if (fileDialog.exec() == QDialog::Rejected)
     {

@@ -23,6 +23,16 @@ if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Debug)
 endif()
 
+# macOS rpath settings for finding libraries at runtime
+if(APPLE)
+    set(CMAKE_MACOSX_RPATH ON)
+    # Use @loader_path which resolves relative to each binary's location
+    # - App in bin/3DForest.app/Contents/MacOS/ needs ../../.. to reach bin/
+    # - Plugins in bin/plugins/ need .. to reach bin/
+    set(CMAKE_INSTALL_RPATH "@loader_path;@loader_path/..;@loader_path/../../..;@loader_path/../../../plugins")
+    set(CMAKE_BUILD_WITH_INSTALL_RPATH ON)
+endif()
+
 include(cmake/cxxflags.cmake)
 
 find_package(Threads REQUIRED)

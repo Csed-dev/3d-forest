@@ -52,11 +52,18 @@ void fromJson(Segment &out, const Json &in)
     }
     else
     {
-        out.speciesId = 0;
+        out.managementStatusId = 0;
     }
 
-    fromJson(out.boundary, in["boundary"]);
-    fromJson(out.treeAttributes, in["treeAttributes"]);
+    if (in.contains("boundary"))
+    {
+        fromJson(out.boundary, in["boundary"]);
+    }
+
+    if (in.contains("treeAttributes"))
+    {
+        fromJson(out.treeAttributes, in["treeAttributes"]);
+    }
 }
 
 void toJson(Json &out, const Segment &in)
